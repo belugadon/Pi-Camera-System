@@ -135,7 +135,7 @@ class application(Frame):
 		
 	def disconnect(self):
 		arguments=[]
-		client.transfer_message(TCP_IP, '20', '0', arguments)
+		client.transfer_message(TCP_IP, '21', '0', arguments)
 
 	def files(self):
 		Buttons = Label(self)
