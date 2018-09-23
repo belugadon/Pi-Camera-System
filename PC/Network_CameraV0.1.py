@@ -78,22 +78,6 @@ class application(Frame):
 		client.transfer_message(TCP_IP, '13', '1', dir2)
 		pass
 
-	def pan_cam_up(self):
-		dir1 = []
-		application.cam_angle = application.cam_angle-1
-		if application.cam_angle < 10:
-			application.cam_angle = 10
-		dir1.append(str(application.cam_angle))
-		client.transfer_message(TCP_IP, '17', '1', dir1)
-
-	def pan_cam_down(self):
-		dir2 = []
-		application.cam_angle = application.cam_angle+1
-		if application.cam_angle > 20:
-			application.cam_angle = 20
-		dir2.append(str(application.cam_angle))
-		client.transfer_message(TCP_IP, '17', '1', dir2)
-
 	def export(self):
 		arguments=[]
 		bright_value = str(self.scale0.get())
@@ -232,12 +216,6 @@ class application(Frame):
 
 		button12 = Button(save, text="Clockwise", command=self.clockwise, bg="grey")
 		button12.pack(anchor=SE, side=LEFT, ipadx=15 )
-	
-		servo_up = Button(pan, text="Pan Up", command=self.pan_cam_up, bg="grey")
-		servo_up.pack(side=TOP, anchor=E, ipadx=17)
-
-		servo_down = Button(pan, text="Pan Down", command=self.pan_cam_down, bg="grey")
-		servo_down.pack(side=BOTTOM, anchor=E, ipadx=10)
 
 	def start_demo(self):
 		arguments=[]
