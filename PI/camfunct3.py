@@ -186,7 +186,7 @@ def client(DHCP_add):
 		camera.start_preview()
 		time.sleep(2)
 
-		camera.start_recording(connection, format='h264')
+		camera.start_recording(connection, format='mjpeg')
 		#camera.wait_recording(60)
 		#camera.stop_recording()
 		server_script.main()
