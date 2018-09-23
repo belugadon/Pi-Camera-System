@@ -99,27 +99,32 @@ class application(Frame):
 		bright_value = str(self.scale0.get())
 		arguments.insert(0, bright_value)
 		client.transfer_message(TCP_IP, '01', '1', arguments)
-		print("Brightness: {}".format(bright_value))	
+		print("Brightness: {}".format(bright_value))
+		arguments=[]
 	
 		sharpness_value = str(self.scale1.get())
 		arguments.insert(0, sharpness_value)
 		client.transfer_message(TCP_IP, '04', '1', arguments)
 		print("Sharpness: {}".format(sharpness_value))
+                arguments=[]
 
 		contrast_value = str(self.scale2.get())
 		arguments.insert(0, contrast_value)
 		client.transfer_message(TCP_IP, '05', '1', arguments)
 		print("Contrast: {}".format(contrast_value))
+		arguments=[]
 	
 		saturation_value = str(self.scale3.get())
 		arguments.insert(0, saturation_value)
 		client.transfer_message(TCP_IP, '06', '1', arguments)
 		print("Saturation: {}".format(saturation_value))
+		arguments=[]
 
 		ISO_value = str(self.scale4.get())
 		arguments.insert(0, ISO_value)
 		client.transfer_message(TCP_IP, '07', '1', arguments)
 		print("ISO: {}".format(ISO_value))
+		arguments=[]
 
 		#exposure = str(self.shutter_speed.get())
 		#arguments.insert(0, exposure)
