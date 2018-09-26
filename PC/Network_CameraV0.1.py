@@ -8,64 +8,98 @@ import subprocess
 import os
 import network
 import socket
+import numpy
 
 TCP_IP = ''
 
-class application(Frame):
-	cam_angle = 10
+global total_length
+total_length = 820
+global total_height
+total_height = 430
 
+class application(Frame):
 	def __init__(self, master):
 		Frame.__init__(self, master)
 		self.grid()
 		self.com()
-		self.settings()
 		self.files()
 		self.demo_on_off()
 		
-	def settings(self):
-		Settings = Label(self, text='Settings')
-		Settings.grid(row=0, column=3, columnspan=6, rowspan=3, sticky='NW', padx=0, pady=5, ipadx=0, ipady=5)
+		#define panel layout with row and column dimensions
+                self.First_Row = 5
+                self.Row_Height = 30
+                self.Column_Width = 90
+                self.Xgrid=[]
+                self.Ygrid=[]
+                self.row_No = 1
+                self.column_no = 1
 
-		column2 = Label(self)
-		column2.grid(row=0, column=2, columnspan=1, sticky='NW', padx=0, pady=0, ipadx=0, ipady=0)
+                for i in range(0, 16):
+                        self.Xgrid.append(self.First_Row+(i*self.Column_Width))
+                        self.Ygrid.append(self.First_Row+(i*self.Row_Height))
+                
+                self.w = Canvas(master, width=800, height=400)
+                self.w.configure(bg="grey")
 
-		Settings2 = Label(self, text='Settings2')
-		Settings2.grid(row=5, column=2, columnspan=1, rowspan=3, sticky='NW', padx=0, pady=5, ipadx=0, ipady=5)
 
-		#for name, label in [("scale0", "Brightness"), ("scale1", "Sharpness"), ("scale2", "Contrast"), ("scale3", "Saturation")]:
-		self.scale0 = Scale(Settings, label="Brightness", from_=100, to=0) 
-		self.scale0.pack(side=LEFT)
+                for (x, y) in zip(self.Xgrid, self.Ygrid): 
+                        self.w.create_line(x, self.First_Row, x, (total_height - self.First_Row))
+                        self.w.create_line(self.First_Row, y, (total_length - self.First_Row), y)
+
+                self.w.place(x=0, y=0, width=820, height=430)
+
+
+		self.button1 = Button(master, text = "Start Demo", fg="green",command = self.start_demo, bg="grey")
+		self.button1.place(x=(5+ (8*self.Column_Width)), y=(12*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		
+		self.button2 = Button(master, text = "Stop Demo", fg="red", command = self.stop_demo, bg="grey")
+		self.button2.place(x=(5+ (8*self.Column_Width)), y=(13*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+
+		save_but = Button(master, text="Capture Image", command=self.capture_image, bg="grey")
+		save_but.place(x=5, y=(2*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		
+		self.stop = Button(master, text="Stop", command=self.disconnect, bg="grey")
+		self.stop.place(x=5, y=(3*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+
+		self.load = Button(master, text="Automation File", command=self.load_command_file, bg="grey")
+		self.load.place(x=5, y=(4*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+
+		self.form3 = Entry(master)
+		self.form3.place(x=5, y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+
+		self.scale0 = Scale(master, label="Bright.", from_=100, to=0) 
+		self.scale0.place(x=(5+ (4*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale0.set(50)
 
-		self.scale1 = Scale(Settings, label="Sharpness", from_=100, to=0) 
-		self.scale1.pack(side=LEFT)
+		self.scale1 = Scale(master, label="Sharp.", from_=100, to=0) 
+		self.scale1.place(x=(5+ (5*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale1.set(50)
 
-		self.scale2 = Scale(Settings, label="Contrast", from_=100, to=0) 
-		self.scale2.pack(side=LEFT)
+		self.scale2 = Scale(master, label="Contr.", from_=100, to=0) 
+		self.scale2.place(x=(5+ (6*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale2.set(50)
 
-		self.scale3 = Scale(Settings, label="Saturation", from_=100, to=0) 
-		self.scale3.pack(side=LEFT)
+		self.scale3 = Scale(master, label="Sat.", from_=100, to=0) 
+		self.scale3.place(x=(5+ (7*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale3.set(50)
 
-		self.scale4 = Scale(Settings, label="ISO", from_=800, to=0) 
-		self.scale4.pack(side=LEFT)
-		self.scale4.set(50)
-
-		self.shutter_speed = Scale(Settings2, label="Shutter Speed", from_=6000000, to=10000) 
-		self.shutter_speed.pack(side=LEFT)
-		self.shutter_speed.set(33000)
+		self.scale4 = Scale(master, label="ISO", from_=800, to=0) 
+		self.scale4.place(x=(5+ (8*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
+		self.scale4.set(200)
 		
-		self.button4 = Button(column2, text="Export to Camera", command=self.export, bg="grey")
-		self.button4.pack(side=TOP, anchor=N, ipady=2, ipadx=7, pady=3)
+		self.button4 = Button(master, text="Send Settings", command=self.export, bg="grey")
+		self.button4.place(x=(5+(8*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		
+                self.Stream = Button(master, text="Stream", command=self.server, bg="grey")
+		self.Stream.place(x=5, y=(0*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		
+		button12 = Button(master, text="Clockwise", command=self.clockwise, bg="grey")
+		button12.place(x=5, y=(8*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+				
+		self.button13 = Button(master, text="Counterclockw.", command=self.counterclockwise, bg="grey")
+		self.button13.place(x=5, y=(9*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
-		Stream = Button(column2, text="Stream", command=self.server, bg="grey")
-		Stream.pack(side=TOP, ipadx=33, pady=8, anchor=N)
-
-		stop = Button(column2, text="Stop", command=self.disconnect, bg="grey")
-		stop.pack(side=TOP, ipadx=40, pady=8, anchor=N)
-
+        #def build_button(self.label, self.row, self.column, )
 	def clockwise(self):
 		dir1 = []
 		dir1.append('>')
@@ -148,12 +182,6 @@ class application(Frame):
 		#save.pack(side=TOP, anchor=NE)
 		#form2 = Entry(Fourms)
 		#form2.pack(side=TOP, anchor=NW, ipady=2, pady=1)
-		
-		load = Button(Buttons, text="Load Automation File", command=self.load_command_file, bg="grey")
-		load.pack(side=LEFT, anchor=N, pady=2)
-
-		self.form3 = Entry(Fourms)
-		self.form3.pack(side=LEFT, anchor=W, ipady=2, pady=3)
 
 	def capture_image(self):
 		arguments=[]
@@ -201,21 +229,6 @@ class application(Frame):
 		
 		pan = Label(self)
 		pan.grid(row=0, column=11, sticky='E', padx=0, pady=0, ipadx=0, ipady=0)
-				
-		self.button1 = Button(Control, text = "Start Demo", fg="green",command = self.start_demo, bg="grey")
-		self.button1.pack(side=TOP, anchor=N, ipadx=9)
-		
-		self.button2 = Button(Control, text = "Stop Demo", fg="red", command = self.stop_demo, bg="grey")
-		self.button2.pack(side=TOP, ipadx=10, anchor=N)
-
-		save_but = Button(Control, text="Capture Image", command=self.capture_image, bg="grey")
-		save_but.pack(side=TOP, anchor=N)
-
-		button13 = Button(save, text="Counterclockwise", command=self.counterclockwise, bg="grey")
-		button13.pack(anchor=SW, side=LEFT)
-
-		button12 = Button(save, text="Clockwise", command=self.clockwise, bg="grey")
-		button12.pack(anchor=SE, side=LEFT, ipadx=15 )
 
 	def start_demo(self):
 		arguments=[]
@@ -229,7 +242,7 @@ class application(Frame):
 if __name__ == "__main__":
 	root=Tk()
 	root.title("BATARDO LIVE")
-	root.geometry("800x290")
+	root.geometry("820x430")
 	app=application(root)
 	TCP_IP = client.find_pi()
 	root.mainloop()
