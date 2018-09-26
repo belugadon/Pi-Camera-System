@@ -67,23 +67,23 @@ class application(Frame):
 		self.form3 = Entry(master)
 		self.form3.place(x=5, y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
-		self.scale0 = Scale(master, label="Bright.", from_=100, to=0) 
+		self.scale0 = Scale(master, label="Bright.", from_=100, to=0, bg="grey") 
 		self.scale0.place(x=(5+ (4*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale0.set(50)
 
-		self.scale1 = Scale(master, label="Sharp.", from_=100, to=0) 
+		self.scale1 = Scale(master, label="Sharp.", from_=100, to=0, bg="grey") 
 		self.scale1.place(x=(5+ (5*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale1.set(50)
 
-		self.scale2 = Scale(master, label="Contr.", from_=100, to=0) 
+		self.scale2 = Scale(master, label="Contr.", from_=100, to=0, bg="grey") 
 		self.scale2.place(x=(5+ (6*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale2.set(50)
 
-		self.scale3 = Scale(master, label="Sat.", from_=100, to=0) 
+		self.scale3 = Scale(master, label="Sat.", from_=100, to=0, bg="grey") 
 		self.scale3.place(x=(5+ (7*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale3.set(50)
 
-		self.scale4 = Scale(master, label="ISO", from_=800, to=0) 
+		self.scale4 = Scale(master, label="ISO", from_=800, to=0, bg="grey") 
 		self.scale4.place(x=(5+ (8*self.Column_Width)), y=self.First_Row, width=self.Column_Width, height=(5*self.Row_Height))
 		self.scale4.set(200)
 		
@@ -118,32 +118,32 @@ class application(Frame):
 		arguments.insert(0, bright_value)
 		client.transfer_message(TCP_IP, '01', '1', arguments)
 		print("Brightness: {}".format(bright_value))
+		
 		arguments=[]
-	
 		sharpness_value = str(self.scale1.get())
 		arguments.insert(0, sharpness_value)
 		client.transfer_message(TCP_IP, '04', '1', arguments)
 		print("Sharpness: {}".format(sharpness_value))
+		
                 arguments=[]
-
 		contrast_value = str(self.scale2.get())
 		arguments.insert(0, contrast_value)
 		client.transfer_message(TCP_IP, '05', '1', arguments)
 		print("Contrast: {}".format(contrast_value))
+		
 		arguments=[]
-	
 		saturation_value = str(self.scale3.get())
 		arguments.insert(0, saturation_value)
 		client.transfer_message(TCP_IP, '06', '1', arguments)
 		print("Saturation: {}".format(saturation_value))
+		
 		arguments=[]
-
 		ISO_value = str(self.scale4.get())
 		arguments.insert(0, ISO_value)
 		client.transfer_message(TCP_IP, '07', '1', arguments)
 		print("ISO: {}".format(ISO_value))
+		
 		arguments=[]
-
 		#exposure = str(self.shutter_speed.get())
 		#arguments.insert(0, exposure)
 		#client.transfer_message(TCP_IP, '21', '1', arguments)
@@ -231,8 +231,10 @@ class application(Frame):
 		pan.grid(row=0, column=11, sticky='E', padx=0, pady=0, ipadx=0, ipady=0)
 
 	def start_demo(self):
+                self.export()
 		arguments=[]
 		client.transfer_message(TCP_IP, '09', '0', arguments)
+		
 
 	def stop_demo(self):
 		arguments=[]
@@ -242,7 +244,7 @@ class application(Frame):
 if __name__ == "__main__":
 	root=Tk()
 	root.title("BATARDO LIVE")
-	root.geometry("820x430")
+	root.geometry("{}x{}".format(total_length, total_height))
 	app=application(root)
 	TCP_IP = client.find_pi()
 	root.mainloop()

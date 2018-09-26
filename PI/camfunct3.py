@@ -206,7 +206,7 @@ def capture_image():
 	camera.resolution = (1024, 768)
 	camera.start_preview()
 	time.sleep(2)
-	camera.capture("/mnt/Pictures/{}.jpg".format(datetime.datetime.now()))
+	camera.capture("/media/pi/F4C0-B15B/Pictures/{}.jpg".format(datetime.datetime.now()))
 	camera.stop_preview()
 
 def servo_control(n):
