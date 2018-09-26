@@ -44,18 +44,6 @@ def demo_record(n, file_name):
 		file.close()
 	return 0
 
-def demo_capture_image(file_name):	
-	print("Capture image tcamera = picamera.PiCamera()o file_name.\n*****************************************************")
-	print ("\nCapture will be saved as {}.".format(file_name))
-	#camera = picamera.PiCamera()
-	#file = open(file_name, 'wb')
-	#with picamera.PiCamera() as camera:
-	camera.resolution = (1024, 768)
-	camera.start_preview()
-	time.sleep(2)
-	camera.capture(file_name)
-	camera.stop_preview()
-
 def brightness(n):
 	"""Control camera birghtness.
 *****************************************************
@@ -174,27 +162,7 @@ def rotation(ch):
 	print("Camera Rotation: {}".format(camera.rotation))
 
 def client(DHCP_add):
-	client_socket = socket.socket()
-	client_socket.connect((DHCP_add, 8000))
-
-	connection = client_socket.makefile('wb')
-	try:
-		camera.rotation = 180
-		camera.resolution = (640, 480)
-		camera.framerate = 24
-
-		camera.start_preview()
-		time.sleep(2)
-
-		camera.start_recording(connection, format='mjpeg')
-		#camera.wait_recording(60)
-		#camera.stop_recording()
-		server_script.main()
-	finally:
-		camera.stop_recording()
-		camera.stop_preview()
-		connection.close()
-		client_socket.close()
+	subprocess.Popen("python video.py {}".format(DHCP_add))
 
 def sleep(n):
 	time.sleep(n)
@@ -207,7 +175,6 @@ def capture_image():
 	camera.start_preview()
 	time.sleep(2)
 	date=datetime.datetime.now().strftime("%y%m%d%h%m%s")
-	#date = 
 	camera.capture("/media/pi/F4C0-B15B/Pictures/{}.jpg".format(date))
 	camera.stop_preview()
 

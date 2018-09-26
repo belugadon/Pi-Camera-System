@@ -153,14 +153,8 @@ class application(Frame):
 		serial_con = Label(self)
 		serial_con.grid(column=0, columnspan=2, row=0, sticky='NW', padx=0, pady=0, ipadx=0, ipady=0)
 		
-		#Stream = Label(self)
-		#serial_con.grid(row=1, column=0, columnspan=1, sticky='NW', padx=0, pady=5, ipadx=0, ipady=5)
-		
 		self.port_list = StringVar(serial_con)
 		self.port_list.set("Choose COM Port")
-		
-		#Connect = Button(serial_con, text="Connect", command=self.assign_port, bg="grey")
-		#Connect.pack(side=TOP, ipadx=38, pady=6, anchor=N)
 
 	def server(self):
 		arguments=[]
@@ -177,31 +171,10 @@ class application(Frame):
 
 		Fourms = Label(self)
 		Fourms.grid(row=1, column=3, columnspan=2, sticky='W', padx=0, pady=0, ipadx=0, ipady=0)
-		
-		#save = Button(Buttons, text="Save Image As", command=self.capture_image, bg="grey")
-		#save.pack(side=TOP, anchor=NE)
-		#form2 = Entry(Fourms)
-		#form2.pack(side=TOP, anchor=NW, ipady=2, pady=1)
 
 	def capture_image(self):
 		arguments=[]
-		exposure = str(self.shutter_speed.get())
-		arguments.insert(0, socket.gethostbyname(socket.gethostname()))
-		arguments.insert(1, exposure)
 		client.transfer_message(TCP_IP, '16', '0', arguments)
-		print("Exposure: {}".format(exposure))
-		#s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		#s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#s.bind((TCP_IP, 5005))
-		#s.listen(1)
-		#conn, addr = s.accept()
-		#print("Connection address: {}".format(addr))
-		#conn.setblocking(0)
-		#ready = select.select([conn], [], [], 10)
-		#if ready[0]:
-                #       data = conn.recv(1024)
-                #conn.close()
-                #print(data)
 
 	def load_command_file(self):
 		arg_list = []
