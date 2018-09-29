@@ -25,7 +25,7 @@ def get_packet():
 
 def main():
 	command_code = 0
-	while command_code != '21':
+	while command_code != '99':
 		recv_string = get_packet().rstrip("'").lstrip("b'")
 		print("received data: {}".format(recv_string))
 		message = recv_string.split(":")

@@ -16,9 +16,6 @@ import server_script
 #GPIO.output(4, False)
 
 camera = picamera.PiCamera()
-global client_socket
-global connection# = client_socket.makefile('wb')
-global client_DHCP_address
 
 def demo_preview(n):
 	"""Demo the Pi camera for n seconds
@@ -46,6 +43,18 @@ def demo_record(n, file_name):
 	finally:
 		file.close()
 	return 0
+
+def demo_capture_image(file_name):	
+	print("Capture image tcamera = picamera.PiCamera()o file_name.\n*****************************************************")
+	print ("\nCapture will be saved as {}.".format(file_name))
+	#camera = picamera.PiCamera()
+	#file = open(file_name, 'wb')
+	#with picamera.PiCamera() as camera:
+	camera.resolution = (1024, 768)
+	camera.start_preview()
+	time.sleep(2)
+	camera.capture(file_name)
+	camera.stop_preview()
 
 def brightness(n):
 	"""Control camera birghtness.
@@ -95,9 +104,9 @@ def cam_enable():
 	"""
 	print("Activate Poop camera\n*****************************************************")
 	camera.start_preview()
-	return 0 
+	return 0
 
-def cam_disable():	
+def cam_disable()
 	"""Deactivate Pi camera
 *****************************************************
 	"""
@@ -123,7 +132,7 @@ def record_loop(n, a):
 				demo_record(n, "/mnt/vid{}.h264".format(i))
 				i = i+1
 			except (KeyboardInterrupt, SystemExit):
-				raise		
+				raise
 	else:
 		for num in range(1, a+1):
 			print("{}".format(num))
@@ -147,7 +156,7 @@ def rotation(ch):
 			#break
 		elif camera.rotation == 270:
 			camera.rotation = 0
-			#break		 
+			#break
 	elif ch == '<':
 		if camera.rotation == 0:
 			camera.rotation = 270
@@ -160,46 +169,47 @@ def rotation(ch):
 			#break
 		elif camera.rotation == 270:
 			camera.rotation = 180
-			#break	
+			#break
 
 	print("Camera Rotation: {}".format(camera.rotation))
 
 def client(DHCP_add):
-        global client_DHCP_address
-        client_DHCP_address = DHCP_add
-        
-def begin_stream():
-	global connection
-	global client_DHCP_address
-	global client_socket
 	client_socket = socket.socket()
-        client_socket.connect((client_DHCP_address, 8000))
-	connection = client_socket.makefile('wb')
-	camera.rotation = 180
-	camera.resolution = (640, 480)
-	camera.framerate = 24
-	camera.start_preview()
-	time.sleep(2)
-	camera.start_recording(connection, format='mjpeg')
-	
+	client_socket.connect((DHCP_add, 8000))
 
-def end_stream():
-    	camera.stop_recording()
-	camera.stop_preview()
-	connection.close()
-	client_socket.close()
+	connection = client_socket.makefile('wb')
+	try:
+		camera.rotation = 180
+		camera.resolution = (640, 480)
+		camera.framerate = 24
+
+		camera.start_preview()
+		time.sleep(2)
+
+		camera.start_recording(connection, format='mjpeg')
+		#camera.wait_recording(60)
+		#camera.stop_recording()
+		server_script.main()
+	finally:
+		camera.stop_recording()
+		camera.stop_preview()
+		connection.close()
+		client_socket.close()
 
 def sleep(n):
 	time.sleep(n)
 	return 0
 
-def capture_image():	
+def capture_image():
 	print("Capture image to file_name.\n*****************************************************")
 	#print ("\nCapture will be saved as {}.".format(file_name))
 	camera.resolution = (1024, 768)
 	camera.start_preview()
 	time.sleep(2)
-	date=datetime.datetime.now().strftime("%y%m%d%h%m%s")
+	date =datetime.datetime.now()
+	a = ".-_"
+	for char in a:
+		date = date.replace(char, "")
 	camera.capture("/media/pi/F4C0-B15B/Pictures/{}.jpg".format(date))
 	camera.stop_preview()
 

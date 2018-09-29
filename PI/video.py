@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import time
 import picamera
 import sys
@@ -22,6 +23,8 @@ def stream(DHCP_add):
 		time.sleep(2)
 
 		camera.start_recording(connection, format='mjpeg')
+		while True:
+                    time.sleep(1)
 	finally:
 		camera.stop_recording()
 		camera.stop_preview()

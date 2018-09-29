@@ -31,15 +31,15 @@ def decode(function_code, argument_code):
 	elif function_code == b'13':	
 		rotation_pointer = camfunct3.rotation(argument_code[0])
 	elif function_code == b'14':
-		camfunct3.client(argument_code[0])
+		camfunct3.begin_stream()
 	elif function_code == b'15':	
 		camfunct3.sleep(float(argument_code[0]))
 	elif function_code == b'16':	
 		camfunct3.capture_image()
-	#elif function_code == b'17':
-	#	motion_control.servo_control(int(argument_code[0]))
-	#elif function_code == b'18':
-	#	motion_control.motor_control(int(argument_code[0]), argument_code[1])
+	elif function_code == b'17':
+		camfunct3.end_stream()
+	elif function_code == b'18':
+		camfunct3.client(argument_code[0])
 	#elif function_code == b'19':
 	#	motion_control.motor_B_control(int(argument_code[0]), argument_code[1])
 	elif function_code == b'20':
