@@ -26,7 +26,7 @@ def stream(TCP_IP):
     		# Run a viewer with an appropriate command line. Uncomment the mplayer
     		# version if you would prefer to use mplayer instead of VLC
 		cmdline = ['vlc.exe', '--demux', 'mjpeg', '-']
-		#cmdline = ['mplayer', '-fps', '25', '-cache', '1024', '-']
+		#cmdline = ['mplayer.exe', '-fps', '25', '-cache', '1024', '-']
 		player = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
 		while True:
 			# Repeatedly read 1k of data from the connection and write it to
