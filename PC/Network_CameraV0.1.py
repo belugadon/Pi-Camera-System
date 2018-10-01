@@ -52,11 +52,11 @@ class application(Frame):
 		self.button2 = Button(master, text = "Stop Demo", fg="red", command = self.stop_demo, bg="grey")
 		self.button2.place(x=(5+ (8*self.Column_Width)), y=(13*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
-		save_but = Button(master, text="Capture Image", command=self.capture_image, bg="grey")
-		save_but.place(x=5, y=(2*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		save_but = Button(master, text="Capture Image", command=self.capture_image, fg="yellow", bg="grey")
+		save_but.place(x=(5+ (1*self.Column_Width)), y=(0*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
-		self.stop = Button(master, text="Stop", command=self.disconnect, bg="grey")
-		self.stop.place(x=5, y=(3*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.stop = Button(master, text="Stop", command=self.disconnect, fg="Red", bg="grey")
+		self.stop.place(x=5, y=(1*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
 		self.load = Button(master, text="Automation File", command=self.load_command_file, bg="grey")
 		self.load.place(x=5, y=(4*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
@@ -85,16 +85,16 @@ class application(Frame):
 		self.scale4.set(200)
 
 		self.button4 = Button(master, text="Send Settings", command=self.export, bg="grey")
-		self.button4.place(x=(5+(8*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.button4.place(x=(5+(4*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
-		self.Stream = Button(master, text="Stream", command=self.server, bg="grey")
+		self.Stream = Button(master, text="Stream", command=self.server, fg="green", bg="grey")
 		self.Stream.place(x=5, y=(0*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
 		button12 = Button(master, text="Clockwise", command=self.clockwise, bg="grey")
-		button12.place(x=5, y=(8*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		button12.place(x=(5+(8*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
 		self.button13 = Button(master, text="Counterclockw.", command=self.counterclockwise, bg="grey")
-		self.button13.place(x=5, y=(9*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.button13.place(x=(5+(7*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
 	#def build_button(self.label, self.row, self.column, )
 	def clockwise(self):
