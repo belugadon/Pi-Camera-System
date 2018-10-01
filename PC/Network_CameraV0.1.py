@@ -154,8 +154,9 @@ class application(Frame):
 		self.port_list.set("Choose COM Port")
 
 	def server(self):
-		arguments=[]
-		#network.stream(TCP_IP)
+                arguments=[]
+                arguments.insert(0, socket.gethostbyname(socket.gethostname()))
+                client.transfer_message(TCP_IP, '18', '1', arguments)
 		subprocess.Popen("python network.py {}".format(TCP_IP))
 
 	def disconnect(self):
@@ -217,7 +218,4 @@ if __name__ == "__main__":
 	root.geometry("{}x{}".format(total_length, total_height))
 	app=application(root)
 	TCP_IP = client.find_pi()
-        arguments=[]
-	arguments.insert(0, socket.gethostbyname(socket.gethostname()))
-	client.transfer_message(TCP_IP, '18', '1', arguments)
 	root.mainloop()
