@@ -40,8 +40,8 @@ def decode(function_code, argument_code):
 		camfunct3.end_stream()
 	elif function_code == b'18':
 		camfunct3.client(argument_code[0])
-	#elif function_code == b'19':
-	#	motion_control.motor_B_control(int(argument_code[0]), argument_code[1])
+	elif function_code == b'19':
+		camfunct3.output(argument_code[0])
 	elif function_code == b'20':
 		pass
 

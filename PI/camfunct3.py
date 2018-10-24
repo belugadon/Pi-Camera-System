@@ -8,12 +8,16 @@ import subprocess
 import os
 import server_script
 #import smbus
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 #GPIO.setwarnings(False)
 
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(4, GPIO.OUT)
-#GPIO.output(4, False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(20, GPIO.OUT)
+GPIO.output(20, False)
+GPIO.setup(16, GPIO.OUT)
+GPIO.output(16, False)
+GPIO.setup(23, GPIO.OUT)
+GPIO.output(23, False)
 
 camera = picamera.PiCamera()
 global client_socket
@@ -203,16 +207,25 @@ def capture_image():
 	camera.capture("/media/pi/F4C0-B15B/Pictures/{}.jpg".format(date))
 	camera.stop_preview()
 
-def servo_control(n):
-	print("Write {} to servo controller\n".format(n))
-	#GPIO.output(4, True)
-	#time.sleep(2)
-	bus = smbus.SMBus(1)
-	DEVICE_ADDRESS = 0x28
-	DEVICE_REGISTER = 0xAF
-	#time.sleep(2)
-	bus.write_byte_data(DEVICE_ADDRESS, DEVICE_REGISTER, n)
-	#time.sleep(2)
-	#GPIO.output(4, False)
-	print("\nturd!")
-	#return 0
+def output(n):
+    if n == '1':
+        GPIO.output(20, True)
+        print ("out 1")
+    else:
+        GPIO.output(20, False)
+    if n == '2':
+        GPIO.output(16, True)
+        print ("out 2")
+    else:
+        GPIO.output(16, False)
+    if n == '3':
+        GPIO.output(23, True)
+        print ("out 3")
+    else:
+        GPIO.output(23, False)
+    if n == '4':
+        GPIO.output(23, False)
+        GPIO.output(20, False)
+        GPIO.output(16, False)        
+        print ("out off") 
+        
