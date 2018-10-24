@@ -96,6 +96,15 @@ class application(Frame):
 		self.button13 = Button(master, text="Counterclockw.", command=self.counterclockwise, bg="grey")
 		self.button13.place(x=(5+(7*self.Column_Width)), y=(5*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
 
+		self.Stream = Button(master, text="Out 1", command=self.output_1, fg="black", bg="grey")
+		self.Stream.place(x=(5+(6*self.Column_Width)), y=(6*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.Stream = Button(master, text="Out 2", command=self.output_2, fg="black", bg="grey")
+		self.Stream.place(x=(5+(7*self.Column_Width)), y=(6*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.Stream = Button(master, text="Out 3", command=self.output_3, fg="black", bg="grey")
+		self.Stream.place(x=(5+(8*self.Column_Width)), y=(6*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+		self.Stream = Button(master, text="Out 3", command=self.output_off, fg="black", bg="grey")
+		self.Stream.place(x=(5+(8*self.Column_Width)), y=(7*self.Row_Height+self.First_Row), width=self.Column_Width, height=self.Row_Height)
+
 	#def build_button(self.label, self.row, self.column, )
 	def clockwise(self):
 		dir1 = []
@@ -210,6 +219,27 @@ class application(Frame):
 	def stop_demo(self):
 		arguments=[]
 		client.transfer_message(TCP_IP, '10', '0', arguments)
+
+	def output_1(self):
+		arguments=[]
+		arguments.insert(0, '1')
+		client.transfer_message(TCP_IP, '19', '1', arguments)
+
+	def output_2(self):
+		arguments=[]
+		arguments.insert(0, '2')
+		client.transfer_message(TCP_IP, '19', '1', arguments)
+
+	def output_3(self):
+		arguments=[]
+		arguments.insert(0, '3')
+		client.transfer_message(TCP_IP, '19', '1', arguments)
+
+	def output_off(self):
+		arguments=[]
+		arguments.insert(0, '4')
+		client.transfer_message(TCP_IP, '19', '1', arguments)
+		
 
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@ def find_pi():
 	a=0
 	packet = '20'
 	packet = packet + ':' + '0'
-	while a <= 25:
+	while a <= 254:
 		TCP_IP = '192.168.0.{}'.format(a)
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		#print("{}".format(TCP_IP))
